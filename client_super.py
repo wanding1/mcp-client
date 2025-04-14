@@ -8,7 +8,6 @@ from mcp.client.stdio import stdio_client
 from dotenv import load_dotenv
 import json
 import os
-import sys
 from openai import AsyncOpenAI
 
 load_dotenv()  # load environment variables from .env
@@ -179,9 +178,13 @@ class MCPClient:
             except Exception as e:
                 print(f"\nError: {str(e)}")
 
+
+
     async def cleanup(self):
         """清理资源"""
         await self.exit_stack.aclose()
+        # 给系统一点时间来关闭资源
+        await asyncio.sleep(0.5)
 
 
 async def main():
@@ -222,6 +225,13 @@ async def main():
             print("错误：mcp.json不是有效的JSON文件")
     finally:
         await client.cleanup()
+        # 确保所有任务都有机会完成
+        tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+        for task in tasks:
+            task.cancel()
+            
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
 
 if __name__ == "__main__":
     asyncio.run(main())

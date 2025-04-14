@@ -1,4 +1,6 @@
 .env
 .idea/
 .vscode/
-.python-version
+node_modules/
+dist/
+build/

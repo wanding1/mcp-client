@@ -1,0 +1,22 @@
+{
+    "mcpServers": {
+      "sequential-thinking": {
+		  "command": "cmd",
+		  "args": [
+            "/c",
+            "npx",  
+            "-y",
+			"@modelcontextprotocol/server-sequential-thinking"
+		  ]
+		},
+		"playwright": {
+		  "command": "cmd",
+		  "args": [
+            "/c",
+			"npx",  
+            "-y",
+			"@playwright/mcp@latest"
+		  ]
+		}
+	}
+}
